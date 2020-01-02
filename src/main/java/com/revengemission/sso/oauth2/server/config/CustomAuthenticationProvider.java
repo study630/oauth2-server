@@ -59,12 +59,14 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
         // 添加额外处理，如验证码等
         Object details = authentication.getDetails();
         if (details instanceof CustomWebAuthenticationDetails) {
-            CustomWebAuthenticationDetails customWebAuthenticationDetails = (CustomWebAuthenticationDetails) details;
-            String captcha = captchaService.getCaptcha(CachesEnum.GraphCaptchaCache, customWebAuthenticationDetails.getGraphId());
-            if (!StringUtils.equalsIgnoreCase(customWebAuthenticationDetails.getInputVerificationCode(), captcha)) {
-                throw new VerificationCodeException("验证码错误！");
+            if (passwordCaptcha) {
+                CustomWebAuthenticationDetails customWebAuthenticationDetails = (CustomWebAuthenticationDetails) details;
+                String captcha = captchaService.getCaptcha(CachesEnum.GraphCaptchaCache, customWebAuthenticationDetails.getGraphId());
+                if (!StringUtils.equalsIgnoreCase(customWebAuthenticationDetails.getInputVerificationCode(), captcha)) {
+                    throw new VerificationCodeException("验证码错误！");
+                }
+                captchaService.removeCaptcha(CachesEnum.GraphCaptchaCache, customWebAuthenticationDetails.getGraphId());
             }
-            captchaService.removeCaptcha(CachesEnum.GraphCaptchaCache, customWebAuthenticationDetails.getGraphId());
         } else if (details instanceof LinkedHashMap<?, ?>) {
 
             if (passwordCaptcha) {

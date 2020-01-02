@@ -56,9 +56,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         userAccountService.loginSuccess(authentication.getName());
 
-        boolean isAjax = "XMLHttpRequest".equals(request
-                .getHeader("X-Requested-With")) || "apiLogin".equals(request
-                .getHeader("api-login"));
+        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With")) ||
+                          "apiLogin".equals(request.getHeader("api-login"));
 
         if (isAjax) {
             response.setHeader("Content-Type", "application/json;charset=UTF-8");

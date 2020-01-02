@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Value("${oauth2.granttype.password.captcha:false}")
+    @Value("${password.captcha:false}")
     private boolean passwordCaptcha;
 
     @Autowired

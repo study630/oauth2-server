@@ -43,8 +43,10 @@ public class CustomTokenEnhancer implements TokenEnhancer {
             }
             if (map.containsKey("sub")) {
                 additionalInformation.put("sub", map.get("sub"));
+                additionalInformation.put("username", map.get("sub"));
             } else {
                 additionalInformation.put("sub", authentication.getUserAuthentication().getName());
+                additionalInformation.put("username", authentication.getUserAuthentication().getName());
             }
 
             additionalInformation.put("iss", this.issuerUri);
@@ -56,6 +58,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
                 additionalInformation.put("grantType", authentication.getOAuth2Request().getGrantType());
                 additionalInformation.put("accountOpenCode", user.getAccountOpenCode());
                 additionalInformation.put("sub", user.getUsername());
+                additionalInformation.put("username", user.getUsername());
             }
             additionalInformation.put("iss", this.issuerUri);
         }
