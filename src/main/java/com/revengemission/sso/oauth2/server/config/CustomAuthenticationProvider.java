@@ -22,7 +22,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
     private boolean passwordCaptcha;
 
-    private UserDetailsService userService;
+    private UserDetailsService userDetailsService;
 
     private PasswordEncoder passwordEncoder;
 
@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
     public CustomAuthenticationProvider(UserDetailsService userService, PasswordEncoder passwordEncoder, CaptchaService captchaService, boolean passwordCaptcha) {
         this.passwordCaptcha = passwordCaptcha;
-        this.userService = userService;
+        this.userDetailsService = userService;
         this.passwordEncoder = passwordEncoder;
         this.captchaService = captchaService;
     }
@@ -91,7 +91,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
         }
 
         try {
-            UserDetails loadedUser = userService.loadUserByUsername(username);
+            UserDetails loadedUser = userDetailsService.loadUserByUsername(username);
             if (loadedUser == null) {
                 throw new InternalAuthenticationServiceException(
                     "UserDetailsService returned null, which is an interface contract violation");
