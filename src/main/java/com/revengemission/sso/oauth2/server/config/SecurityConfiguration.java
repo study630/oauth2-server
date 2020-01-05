@@ -85,7 +85,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .successHandler(customAuthenticationSuccessHandler)
             .loginPage("/signIn").loginProcessingUrl("/security_check").permitAll();
 
-        http.headers().frameOptions().sameOrigin();
+        http.headers().frameOptions().disable();
         http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
     }
 }
