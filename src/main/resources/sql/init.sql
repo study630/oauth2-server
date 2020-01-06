@@ -26,3 +26,5 @@ insert into k_oauth_client select * from oauth_client_entity;
 insert into k_user (id,regname,mobile,nickname,address,pwd) select id,username,mobile,nick_name,address,password from user_account_entity;
 
 insert into k_user_roles select * from user_account_entity_roles;
+
+select * from k_user;

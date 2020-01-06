@@ -7,8 +7,8 @@ import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"clientId"}),name = "k_oauth_client")
-public class OauthClientEntity extends BaseEntity {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"clientId"}),name = "k_oauth_app")
+public class OauthAppEntity extends BaseEntity {
     /**
      *
      */

@@ -2,6 +2,7 @@ package com.revengemission.sso.oauth2.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.revengemission.sso.oauth2.server.persistence.entity.OauthAppEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -31,12 +32,12 @@ public class UserAccount extends BaseDomain {
     private String avatarUrl;
     private String email;
     private String mobile;
-    private String province;
-    private String city;
+    private String region;
     private String address;
     private LocalDate birthday;
-    private String gender;
+    private String sex;
     private LocalDateTime failureTime;
     private int failureCount;
     private List<Role> roles = new ArrayList<>();
+    private List<OauthClient> apps = new ArrayList<>();
 }

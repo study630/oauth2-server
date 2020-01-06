@@ -5,7 +5,7 @@ import com.revengemission.sso.oauth2.server.domain.AlreadyExistsException;
 import com.revengemission.sso.oauth2.server.domain.EntityNotFoundException;
 import com.revengemission.sso.oauth2.server.domain.JsonObjects;
 import com.revengemission.sso.oauth2.server.domain.OauthClient;
-import com.revengemission.sso.oauth2.server.persistence.entity.OauthClientEntity;
+import com.revengemission.sso.oauth2.server.persistence.entity.OauthAppEntity;
 import com.revengemission.sso.oauth2.server.persistence.repository.OauthClientRepository;
 import com.revengemission.sso.oauth2.server.service.OauthClientService;
 import org.apache.commons.lang3.StringUtils;
@@ -30,9 +30,9 @@ public class OauthClientServiceImpl implements OauthClientService {
 
     @Override
     public OauthClient findByClientId(String clientId) {
-        OauthClientEntity oauthClientEntity = oauthClientRepository.findByClientId(clientId);
-        if (oauthClientEntity != null) {
-            return dozerMapper.map(oauthClientEntity, OauthClient.class);
+        OauthAppEntity oauthAppEntity = oauthClientRepository.findByClientId(clientId);
+        if (oauthAppEntity != null) {
+            return dozerMapper.map(oauthAppEntity, OauthClient.class);
         } else {
             return null;
         }
@@ -48,7 +48,7 @@ public class OauthClientServiceImpl implements OauthClientService {
             sort = Sort.by(Sort.Direction.DESC, sortField);
         }
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
-        Page<OauthClientEntity> page = oauthClientRepository.findAll(pageable);
+        Page<OauthAppEntity> page = oauthClientRepository.findAll(pageable);
         if (page.getContent() != null && page.getContent().size() > 0) {
             jsonObjects.setRecordsTotal(page.getTotalElements());
             jsonObjects.setRecordsFiltered(page.getTotalElements());
@@ -59,25 +59,25 @@ public class OauthClientServiceImpl implements OauthClientService {
 
     @Override
     public OauthClient create(OauthClient oauthClient) throws AlreadyExistsException {
-        OauthClientEntity exist = oauthClientRepository.findByClientId(oauthClient.getClientId());
+        OauthAppEntity exist = oauthClientRepository.findByClientId(oauthClient.getClientId());
         if (exist != null) {
             throw new AlreadyExistsException(oauthClient.getClientId() + " already exists!");
         }
-        OauthClientEntity oauthClientEntity = dozerMapper.map(oauthClient, OauthClientEntity.class);
-        oauthClientRepository.save(oauthClientEntity);
-        return dozerMapper.map(oauthClientEntity, OauthClient.class);
+        OauthAppEntity oauthAppEntity = dozerMapper.map(oauthClient, OauthAppEntity.class);
+        oauthClientRepository.save(oauthAppEntity);
+        return dozerMapper.map(oauthAppEntity, OauthClient.class);
     }
 
     @Override
     public OauthClient retrieveById(long id) throws EntityNotFoundException {
-        Optional<OauthClientEntity> entityOptional = oauthClientRepository.findById(id);
+        Optional<OauthAppEntity> entityOptional = oauthClientRepository.findById(id);
         return dozerMapper.map(entityOptional.orElseThrow(EntityNotFoundException::new), OauthClient.class);
     }
 
     @Override
     public OauthClient updateById(OauthClient oauthClient) throws EntityNotFoundException {
-        Optional<OauthClientEntity> entityOptional = oauthClientRepository.findById(Long.parseLong(oauthClient.getId()));
-        OauthClientEntity e = entityOptional.orElseThrow(EntityNotFoundException::new);
+        Optional<OauthAppEntity> entityOptional = oauthClientRepository.findById(Long.parseLong(oauthClient.getId()));
+        OauthAppEntity e = entityOptional.orElseThrow(EntityNotFoundException::new);
         if (StringUtils.isNotEmpty(oauthClient.getClientSecret())) {
             e.setClientSecret(oauthClient.getClientSecret());
         }
@@ -97,8 +97,8 @@ public class OauthClientServiceImpl implements OauthClientService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateRecordStatus(long id, int recordStatus) {
-        Optional<OauthClientEntity> entityOptional = oauthClientRepository.findById(id);
-        OauthClientEntity e = entityOptional.orElseThrow(EntityNotFoundException::new);
+        Optional<OauthAppEntity> entityOptional = oauthClientRepository.findById(id);
+        OauthAppEntity e = entityOptional.orElseThrow(EntityNotFoundException::new);
         e.setRecordStatus(recordStatus);
         oauthClientRepository.save(e);
     }

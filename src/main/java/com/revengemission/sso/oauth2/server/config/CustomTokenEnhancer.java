@@ -67,6 +67,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         }
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
+        System.out.println("accessToken.getValue() = " + accessToken.getValue());
         return accessToken;
     }
 

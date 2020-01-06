@@ -2,7 +2,9 @@ package com.revengemission.sso.oauth2.server.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.revengemission.sso.oauth2.server.domain.EntityNotFoundException;
+import com.revengemission.sso.oauth2.server.domain.OauthClient;
 import com.revengemission.sso.oauth2.server.domain.UserAccount;
+import com.revengemission.sso.oauth2.server.persistence.entity.OauthAppEntity;
 import com.revengemission.sso.oauth2.server.service.UserAccountService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,8 +74,19 @@ public class ProfileController {
                 String username = auth2AccessToken.getAdditionalInformation().get("sub").toString();
                 UserAccount userAccount = userAccountService.findByUsername(username);
                 result.put("username", username);
-                if (StringUtils.isNotEmpty(userAccount.getGender())) {
-                    result.put("gender", userAccount.getGender());
+
+                List<OauthClient> listOauthApp = userAccount.getApps();
+                List<Map<String,Object>> lApps = new ArrayList<>();
+                for (int i=0;i<listOauthApp.size();i++){
+                    //OauthAppEntity app = listOauthApp.get(i);
+                    Map<String,Object> map = new HashMap();
+                    OauthClient aa = listOauthApp.get(i);
+                    map.put("appId",listOauthApp.get(i).getId());
+                    map.put("appName",listOauthApp.get(i).getApplicationName());
+                    lApps.add(map);
+                }
+                if (StringUtils.isNotEmpty(userAccount.getSex())) {
+                    result.put("sex", userAccount.getSex());
                 }
                 if (StringUtils.isNotEmpty(userAccount.getNickName())) {
                     result.put("nickName", userAccount.getNickName());
@@ -80,6 +95,7 @@ public class ProfileController {
                 result.put("accountOpenCode", "" + userAccount.getId());
                 result.put("authorities", auth2AccessToken.getAdditionalInformation().get("authorities"));
                 result.put("status", 1);
+                result.put("apps",lApps);
             } else {
                 result.put("status", 0);
                 result.put("message", "未检测到access_token");
@@ -119,8 +135,7 @@ public class ProfileController {
                                 @RequestParam(value = "avatarUrl", required = false) String avatarUrl,
                                 @RequestParam(value = "email", required = false) String email,
                                 @RequestParam(value = "mobile", required = false) String mobile,
-                                @RequestParam(value = "province", required = false) String province,
-                                @RequestParam(value = "city", required = false) String city,
+                                @RequestParam(value = "region", required = false) String region,
                                 @RequestParam(value = "address", required = false) String address,
                                 @JsonFormat(pattern = "yyyy-MM-dd") @DateTimeFormat(pattern = "yyyy-MM-dd")
                                 @RequestParam(value = "birthday", required = false) LocalDate birthday,
@@ -132,8 +147,7 @@ public class ProfileController {
             userAccount.setAvatarUrl(StringEscapeUtils.escapeHtml4(avatarUrl));
             userAccount.setEmail(StringEscapeUtils.escapeHtml4(email));
             userAccount.setMobile(StringEscapeUtils.escapeHtml4(mobile));
-            userAccount.setProvince(StringEscapeUtils.escapeHtml4(province));
-            userAccount.setCity(StringEscapeUtils.escapeHtml4(city));
+            userAccount.setRegion(StringEscapeUtils.escapeHtml4(region));
             userAccount.setAddress(StringEscapeUtils.escapeHtml4(address));
             userAccount.setBirthday(birthday);
             userAccount = userAccountService.updateById(userAccount);

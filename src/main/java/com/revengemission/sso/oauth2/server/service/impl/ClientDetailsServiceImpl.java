@@ -3,7 +3,7 @@ package com.revengemission.sso.oauth2.server.service.impl;
 import com.revengemission.sso.oauth2.server.config.CachesEnum;
 import com.revengemission.sso.oauth2.server.domain.AlreadyExpiredException;
 import com.revengemission.sso.oauth2.server.domain.InvalidClientException;
-import com.revengemission.sso.oauth2.server.persistence.entity.OauthClientEntity;
+import com.revengemission.sso.oauth2.server.persistence.entity.OauthAppEntity;
 import com.revengemission.sso.oauth2.server.persistence.repository.OauthClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -39,45 +39,45 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
             return (ClientDetails) valueWrapper.get();
         }
 
-        OauthClientEntity oauthClientEntity = oauthClientRepository.findByClientId(clientId);
-        if (oauthClientEntity != null) {
-            if (oauthClientEntity.getRecordStatus() < 0) {
+        OauthAppEntity oauthAppEntity = oauthClientRepository.findByClientId(clientId);
+        if (oauthAppEntity != null) {
+            if (oauthAppEntity.getRecordStatus() < 0) {
                 throw new InvalidClientException(String.format("clientId %s is disabled!", clientId));
             }
-            if (oauthClientEntity.getExpirationDate() != null && oauthClientEntity.getExpirationDate().isBefore(LocalDateTime.now())) {
+            if (oauthAppEntity.getExpirationDate() != null && oauthAppEntity.getExpirationDate().isBefore(LocalDateTime.now())) {
                 throw new AlreadyExpiredException(String.format("clientId %s already expired!", clientId));
             }
             BaseClientDetails baseClientDetails = new BaseClientDetails();
-            baseClientDetails.setClientId(oauthClientEntity.getClientId());
-            if (!StringUtils.isEmpty(oauthClientEntity.getResourceIds())) {
-                baseClientDetails.setResourceIds(StringUtils.commaDelimitedListToSet(oauthClientEntity.getResourceIds()));
+            baseClientDetails.setClientId(oauthAppEntity.getClientId());
+            if (!StringUtils.isEmpty(oauthAppEntity.getResourceIds())) {
+                baseClientDetails.setResourceIds(StringUtils.commaDelimitedListToSet(oauthAppEntity.getResourceIds()));
             }
-            baseClientDetails.setClientSecret(oauthClientEntity.getClientSecret());
-            if (!StringUtils.isEmpty(oauthClientEntity.getScope())) {
-                baseClientDetails.setScope(StringUtils.commaDelimitedListToSet(oauthClientEntity.getScope()));
+            baseClientDetails.setClientSecret(oauthAppEntity.getClientSecret());
+            if (!StringUtils.isEmpty(oauthAppEntity.getScope())) {
+                baseClientDetails.setScope(StringUtils.commaDelimitedListToSet(oauthAppEntity.getScope()));
             }
-            if (!StringUtils.isEmpty(oauthClientEntity.getAuthorizedGrantTypes())) {
-                baseClientDetails.setAuthorizedGrantTypes(StringUtils.commaDelimitedListToSet(oauthClientEntity.getAuthorizedGrantTypes()));
+            if (!StringUtils.isEmpty(oauthAppEntity.getAuthorizedGrantTypes())) {
+                baseClientDetails.setAuthorizedGrantTypes(StringUtils.commaDelimitedListToSet(oauthAppEntity.getAuthorizedGrantTypes()));
             } else {
                 baseClientDetails.setAuthorizedGrantTypes(StringUtils.commaDelimitedListToSet("authorization_code"));
             }
-            if (!StringUtils.isEmpty(oauthClientEntity.getWebServerRedirectUri())) {
-                baseClientDetails.setRegisteredRedirectUri(StringUtils.commaDelimitedListToSet(oauthClientEntity.getWebServerRedirectUri()));
+            if (!StringUtils.isEmpty(oauthAppEntity.getWebServerRedirectUri())) {
+                baseClientDetails.setRegisteredRedirectUri(StringUtils.commaDelimitedListToSet(oauthAppEntity.getWebServerRedirectUri()));
             }
-            if (!StringUtils.isEmpty(oauthClientEntity.getAuthorities())) {
+            if (!StringUtils.isEmpty(oauthAppEntity.getAuthorities())) {
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                StringUtils.commaDelimitedListToSet(oauthClientEntity.getAuthorities()).forEach(s -> authorities.add(new SimpleGrantedAuthority(s)));
+                StringUtils.commaDelimitedListToSet(oauthAppEntity.getAuthorities()).forEach(s -> authorities.add(new SimpleGrantedAuthority(s)));
                 baseClientDetails.setAuthorities(authorities);
             }
-            if (oauthClientEntity.getAccessTokenValidity() != null && oauthClientEntity.getAccessTokenValidity() > 0) {
-                baseClientDetails.setAccessTokenValiditySeconds(oauthClientEntity.getAccessTokenValidity());
+            if (oauthAppEntity.getAccessTokenValidity() != null && oauthAppEntity.getAccessTokenValidity() > 0) {
+                baseClientDetails.setAccessTokenValiditySeconds(oauthAppEntity.getAccessTokenValidity());
             }
-            if (oauthClientEntity.getRefreshTokenValidity() != null && oauthClientEntity.getRefreshTokenValidity() > 0) {
-                baseClientDetails.setRefreshTokenValiditySeconds(oauthClientEntity.getRefreshTokenValidity());
+            if (oauthAppEntity.getRefreshTokenValidity() != null && oauthAppEntity.getRefreshTokenValidity() > 0) {
+                baseClientDetails.setRefreshTokenValiditySeconds(oauthAppEntity.getRefreshTokenValidity());
             }
 ///            baseClientDetails.setAdditionalInformation(oauthClientEntity.getAdditionalInformation());
-            if (!StringUtils.isEmpty(oauthClientEntity.getAutoApprove())) {
-                baseClientDetails.setAutoApproveScopes(StringUtils.commaDelimitedListToSet(oauthClientEntity.getAutoApprove()));
+            if (!StringUtils.isEmpty(oauthAppEntity.getAutoApprove())) {
+                baseClientDetails.setAutoApproveScopes(StringUtils.commaDelimitedListToSet(oauthAppEntity.getAutoApprove()));
             }
             cacheManager.getCache(CachesEnum.Oauth2ClientCache.name()).put(clientId, baseClientDetails);
             return baseClientDetails;
