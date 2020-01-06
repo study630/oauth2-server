@@ -7,7 +7,7 @@ import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"clientId"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"clientId"}),name = "k_oauth_client")
 public class OauthClientEntity extends BaseEntity {
     /**
      *
@@ -15,6 +15,10 @@ public class OauthClientEntity extends BaseEntity {
     private static final long serialVersionUID = -3042356579574873614L;
     @Column(nullable = false)
     private String clientId;
+
+    /**
+     * 应用名称
+     */
     private String applicationName;
     private String resourceIds;
     @Column(nullable = false)

@@ -1,6 +1,9 @@
 package com.revengemission.sso.oauth2.server.persistence.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,34 +11,89 @@ import java.util.List;
 
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
-public class UserAccountEntity extends BaseEntity {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"regname"}),name = "k_user")
+public class UserEntity extends BaseEntity {
 
     private static final long serialVersionUID = -5519234457588411587L;
-    @Column(nullable = false, columnDefinition = "VARCHAR(50)")
+
+//    @Id
+//    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(generator ="jpa-uuid")
+//    private String id;
+//
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private long id_9dsoft;
+
+    @Column(nullable = false, columnDefinition = "VARCHAR(100)",name = "regname")
     private String username;
-    @Column(nullable = false)
+
+    @Column(nullable = false,name = "pwd")
     private String password;
+
+    @Column(columnDefinition = "varchar(10)")
+    private String pwdtype;
+
     /**
      * 多种登陆方式合并账号使用
      */
     private String accountOpenCode;
-    private String nickName;
-    private String avatarUrl;
+    private String nickname;
     private String email;
     private String mobile;
-    private String province;
-    private String city;
-    private String address;
     private LocalDate birthday;
-    private String gender;
+    private String region;
+    private String address;
+    private String sex;
     private LocalDateTime failureTime;
-    @Column(name = "failure_count", columnDefinition = "int default 0")
-    private int failureCount;
+    private LocalDateTime lastlogintime;
 
     @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseForeignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     List<RoleEntity> roles = new ArrayList<>();
+
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public void setId(String id) {
+//        this.id = id;
+//    }
+//
+//    public long getId_9dsoft() {
+//        return id_9dsoft;
+//    }
+//
+//    public void setId_9dsoft(long id_9dsoft) {
+//        this.id_9dsoft = id_9dsoft;
+//    }
+
+    public String getPwdtype() {
+        return pwdtype;
+    }
+
+    public void setPwdtype(String pwdtype) {
+        this.pwdtype = pwdtype;
+    }
+
+    @Column(name = "failure_count", columnDefinition = "int default 0")
+    private int failureCount;
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public LocalDateTime getLastlogintime() {
+        return lastlogintime;
+    }
+
+    public void setLastlogintime(LocalDateTime lastlogintime) {
+        this.lastlogintime = lastlogintime;
+    }
 
     public String getUsername() {
         return username;
@@ -61,20 +119,12 @@ public class UserAccountEntity extends BaseEntity {
         this.accountOpenCode = accountOpenCode;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setNickname(String nickName) {
+        this.nickname = nickName;
     }
 
     public String getEmail() {
@@ -93,22 +143,6 @@ public class UserAccountEntity extends BaseEntity {
         this.mobile = mobile;
     }
 
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -125,12 +159,12 @@ public class UserAccountEntity extends BaseEntity {
         this.birthday = birthday;
     }
 
-    public String getGender() {
-        return gender;
+    public String getSex() {
+        return sex;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setSex(String gender) {
+        this.sex = gender;
     }
 
     public LocalDateTime getFailureTime() {

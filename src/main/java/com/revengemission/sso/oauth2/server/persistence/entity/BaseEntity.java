@@ -1,5 +1,7 @@
 package com.revengemission.sso.oauth2.server.persistence.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -8,8 +10,10 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+    @GeneratedValue(generator ="jpa-uuid")
+    private String id;
 
     @Column(name = "record_status", columnDefinition = "int default 0")
     private int recordStatus;
@@ -29,11 +33,24 @@ public abstract class BaseEntity implements Serializable {
     @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON update CURRENT_TIMESTAMP")
     private LocalDateTime lastModified;
 
-    public Long getId() {
+    /*
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id_9dsoft;
+
+
+    public long getId_9dsoft() {
+        return id_9dsoft;
+    }
+
+    public void setId_9dsoft(long id_9dsoft) {
+        this.id_9dsoft = id_9dsoft;
+    }
+    */
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

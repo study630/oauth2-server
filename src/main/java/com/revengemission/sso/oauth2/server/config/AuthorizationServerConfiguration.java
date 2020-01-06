@@ -4,6 +4,7 @@ import com.revengemission.sso.oauth2.server.persistence.repository.RoleRepositor
 import com.revengemission.sso.oauth2.server.persistence.repository.ThirdPartyAccountRepository;
 import com.revengemission.sso.oauth2.server.service.CaptchaService;
 import com.revengemission.sso.oauth2.server.service.impl.ClientDetailsServiceImpl;
+import com.revengemission.sso.oauth2.server.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -59,7 +60,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     ClientDetailsServiceImpl clientDetailsService;
 
     @Autowired
-    UserDetailsService userDetailsService;
+    UserDetailsServiceImpl UserDetailsService;
 
     @Autowired
     CaptchaService captchaService;
@@ -150,7 +151,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         endpoints.accessTokenConverter(accessTokenConverter());
         endpoints.tokenStore(tokenStore());
         // !!!要使用refresh_token的话，需要额外配置userDetailsService!!!
-        endpoints.userDetailsService(userDetailsService);
+        endpoints.userDetailsService(UserDetailsService);
         endpoints.reuseRefreshTokens(true);
         endpoints.tokenGranter(tokenGranter());
         endpoints.authorizationCodeServices(authorizationCodeServices());
@@ -219,7 +220,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 authorizationServerTokenServices(), clientDetailsService, oAuth2RequestFactory()));
         }
 
-        tokenGranters.add(new SmsCodeTokenGranter(userDetailsService, authorizationServerTokenServices(),
+        tokenGranters.add(new SmsCodeTokenGranter(UserDetailsService, authorizationServerTokenServices(),
             clientDetailsService, oAuth2RequestFactory(), captchaService));
 
         tokenGranters.add(new WeChatMiniProgramTokenGranter(thirdPartyAccountRepository, roleRepository, authorizationServerTokenServices(),

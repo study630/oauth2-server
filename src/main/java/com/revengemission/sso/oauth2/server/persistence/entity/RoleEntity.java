@@ -10,7 +10,6 @@ import javax.persistence.UniqueConstraint;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"roleName"}))
 public class RoleEntity extends BaseEntity {
 
-
     @Column(nullable = false, columnDefinition = "VARCHAR(15)")
     private String roleName;
 

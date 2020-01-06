@@ -1,8 +1,8 @@
 package com.revengemission.sso.oauth2.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.revengemission.sso.oauth2.server.persistence.entity.UserAccountEntity;
-import com.revengemission.sso.oauth2.server.persistence.repository.UserAccountRepository;
+import com.revengemission.sso.oauth2.server.persistence.entity.UserEntity;
+import com.revengemission.sso.oauth2.server.persistence.repository.UserRepository;
 import com.revengemission.sso.oauth2.server.utils.JsonUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Ignore;
@@ -26,7 +26,7 @@ public class ApplicationTests {
     JdbcTemplate jdbcTemplate;
 
     @Autowired
-    UserAccountRepository userAccountRepository;
+    UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -44,13 +44,13 @@ public class ApplicationTests {
     @Ignore
     @Test
     public void insertUserAccount() throws JsonProcessingException {
-        UserAccountEntity userAccountEntity = new UserAccountEntity();
+        UserEntity userAccountEntity = new UserEntity();
         userAccountEntity.setUsername(RandomStringUtils.randomAlphabetic(10));
         userAccountEntity.setPassword(passwordEncoder.encode("tgb.258"));
         userAccountEntity.setAccountOpenCode(UUID.randomUUID().toString());
         LocalDate date = LocalDate.of(1988, 6, 6);
         userAccountEntity.setBirthday(date);
-        userAccountRepository.save(userAccountEntity);
+        userRepository.save(userAccountEntity);
 
         System.out.println(JsonUtil.objectToJsonString(userAccountEntity));
         System.out.println("---------------------------");
@@ -60,9 +60,9 @@ public class ApplicationTests {
     @Ignore
     @Test
     public void updateUserAccount() {
-        userAccountRepository.findById(1L).ifPresent(e -> {
-            e.setRemarks("123");
-            userAccountRepository.save(e);
+        userRepository.findById(1L).ifPresent(e -> {
+            //e.setRemarks("123");
+            userRepository.save(e);
         });
 
         System.out.println("---------------------------");

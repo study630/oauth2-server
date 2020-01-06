@@ -2,8 +2,8 @@ package com.revengemission.sso.oauth2.server.service.impl;
 
 import com.revengemission.sso.oauth2.server.domain.UserInfo;
 import com.revengemission.sso.oauth2.server.persistence.entity.RoleEntity;
-import com.revengemission.sso.oauth2.server.persistence.entity.UserAccountEntity;
-import com.revengemission.sso.oauth2.server.persistence.repository.UserAccountRepository;
+import com.revengemission.sso.oauth2.server.persistence.entity.UserEntity;
+import com.revengemission.sso.oauth2.server.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,11 +18,14 @@ import java.util.List;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    UserAccountRepository userAccountRepository;
+    UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(username);
+        UserEntity userAccountEntity = userRepository.findByUsername(username);
+        if (userAccountEntity==null){
+            userAccountEntity = userRepository.findByMobile(username);
+        }
         if (userAccountEntity != null) {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             if (userAccountEntity.getRoles() != null && userAccountEntity.getRoles().size() > 0) {
@@ -32,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 }
             }
             return new UserInfo(userAccountEntity.getAccountOpenCode(), userAccountEntity.getUsername(), userAccountEntity.getPassword(),
-                userAccountEntity.getRecordStatus() >= 0, true, true, userAccountEntity.getRecordStatus() != -2, grantedAuthorities);
+                true, true, true, true, grantedAuthorities);
         } else {
             throw new UsernameNotFoundException(username + " not found!");
         }

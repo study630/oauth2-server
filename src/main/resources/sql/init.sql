@@ -20,3 +20,9 @@ insert into user_account_entity_roles(user_id, role_id)
 values (1, 1),
        (3, 3);
 
+--  2020-01-06 建表后初始化
+insert into k_oauth_client select * from oauth_client_entity;
+
+insert into k_user (id,regname,mobile,nickname,address,pwd) select id,username,mobile,nick_name,address,password from user_account_entity;
+
+insert into k_user_roles select * from user_account_entity_roles;
