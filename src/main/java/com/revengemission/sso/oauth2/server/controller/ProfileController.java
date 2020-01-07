@@ -78,11 +78,12 @@ public class ProfileController {
                 List<OauthClient> listOauthApp = userAccount.getApps();
                 List<Map<String,Object>> lApps = new ArrayList<>();
                 for (int i=0;i<listOauthApp.size();i++){
-                    //OauthAppEntity app = listOauthApp.get(i);
                     Map<String,Object> map = new HashMap();
-                    OauthClient aa = listOauthApp.get(i);
                     map.put("appId",listOauthApp.get(i).getId());
                     map.put("appName",listOauthApp.get(i).getApplicationName());
+                    map.put("appUrl",listOauthApp.get(i).getAppUrl());
+                    map.put("icon",listOauthApp.get(i).getIcon());
+                    map.put("orderNum",listOauthApp.get(i).getOrderNum());
                     lApps.add(map);
                 }
                 if (StringUtils.isNotEmpty(userAccount.getSex())) {

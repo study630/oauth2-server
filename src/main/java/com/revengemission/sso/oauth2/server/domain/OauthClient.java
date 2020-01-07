@@ -32,4 +32,7 @@ public class OauthClient extends BaseDomain {
      * 客户端过期时间
      */
     private LocalDateTime expirationDate;
+    private String appUrl;
+    private Integer orderNum;
+    private String icon;
 }

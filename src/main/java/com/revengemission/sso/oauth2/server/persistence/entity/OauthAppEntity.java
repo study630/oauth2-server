@@ -33,6 +33,34 @@ public class OauthAppEntity extends BaseEntity {
     private Integer refreshTokenValidity;
     private String additionalInformation;
     private String autoApprove;
+    private String appUrl;
+    private Integer orderNum;
+    private String icon;
+
+    public String getAppUrl() {
+        return appUrl;
+    }
+
+    public void setAppUrl(String appUrl) {
+        this.appUrl = appUrl;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     /**
      * 客户端过期时间，比如应用于多店系统
      */
