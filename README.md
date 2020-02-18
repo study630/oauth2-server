@@ -107,8 +107,6 @@ Post /oauth/token?client_id=SampleClientId&client_secret=tgb.258&grant_type=refr
  
 ````
 
-##  扩展grant_type,參照SMSCodeTokenGranter
-
 
 ## 启动方法</br>
 ````
@@ -118,18 +116,6 @@ java -jar oauth2-server-0.0.3-SNAPSHOT.jar --spring.config.additional-location=/
 ````
 
 ## 管理员角色登录后，可以对用户和client进行管理</br>
-## 效果图
-![登录页](https://raw.githubusercontent.com/jobmission/oauth2-server/master/src/test/resources/static/imgs/login.png)
-![用户管理](https://raw.githubusercontent.com/jobmission/oauth2-server/master/src/test/resources/static/imgs/users.png)
-![client管理](https://raw.githubusercontent.com/jobmission/oauth2-server/master/src/test/resources/static/imgs/clients.png)
-
-## OAuth 2 Developers Guide
-[spring-security-oauth官方文档](https://projects.spring.io/spring-security-oauth/docs/oauth2.html) <br/>
-[Spring Boot and OAuth2 Tutorial](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-
-[client 前端DEMO](https://github.com/jobmission/oauth2-client.git) <br/>
-[api 资源接口端DEMO](https://github.com/jobmission/oauth2-resource.git)
-
 
 ## 注意！！！
 当Server和Client在一台机器上时，请配置域名代理，避免cookie相互覆盖
