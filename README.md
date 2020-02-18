@@ -1,14 +1,7 @@
-#
-#
-# spring-security-oauth2项目官方团队已宣布停止进一步开发，本项目也将暂停更新
-# [Spring 官方声明](https://spring.io/blog/2019/11/14/spring-security-oauth-2-0-roadmap-update)
-## 推荐使用其他开源方案，如  https://www.keycloak.org
-#
-#
 
 ## SpringBoot 2.2.x oauth2 server, SSO 单点登录
 
-## 创建数据库：持久层采用JPA框架，项目启动前必须先创建数据库，启动时数据表会自动创建</br>
+## 创建数据库：持久层采用JPA框架，项目启动前必须先创建数据库oauth2_server</br>
 ````
 #默认用Mysql数据库，如需用其他数据库请修改配置文件以及数据库驱动
 #创建数据库SQL：数据库名、数据库用户名、数据库密码需要和application.properties中的一致
@@ -17,7 +10,7 @@ CREATE DATABASE IF NOT EXISTS oauth2_server DEFAULT CHARSET utf8 COLLATE utf8_ge
 create user 'oauth2_server'@'localhost' identified by 'password_dev';
 grant all privileges on oauth2_server.* to 'oauth2_server'@'localhost';
 
-#初始化数据sql在src/main/resources/sql/init.sql,可自行修改client_id等初始化数据
+#初始化数据sql在src/main/resources/sql/oauth2_server.sql,可自行修改client_id等初始化数据
 ````
 ## 支持的4种授权模式grant_type</br>
 ````
