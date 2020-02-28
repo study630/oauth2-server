@@ -79,11 +79,12 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         } else {
             //Call the parent method to manage the successful authentication
 ///            setDefaultTargetUrl("/");
+
             if (StringUtils.isNotEmpty(redirectUrl)) {
                 super.onAuthenticationSuccess(request, response, authentication);
             } else {
                 if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(RoleEnum.ROLE_USER.toString()))) {
-                    response.sendRedirect("/");
+                    response.sendRedirect("/app/home");
                 } else {
                     response.sendRedirect("/management/user");
                 }

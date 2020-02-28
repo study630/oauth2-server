@@ -56,11 +56,13 @@ public class SignInAndUpController {
         if (StringUtils.isNotEmpty(error)) {
             model.addAttribute("error", error);
         }
-        String[] iframe = savedRequest.getParameterValues("iframe");
+        if (savedRequest!=null) {
+            String[] iframe = savedRequest.getParameterValues("iframe");
 
-        if (iframe!=null){
-            log.info("iframe页面的登录");
-            return "signIn_Iframe";
+            if (iframe != null) {
+                log.info("iframe页面的登录");
+                return "signIn_Iframe";
+            }
         }
         return "signIn";
     }
